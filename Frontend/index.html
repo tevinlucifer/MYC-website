@@ -224,8 +224,7 @@
       </div>
       <div class="fwrap">
         <div class="frame">
-          <!-- Add a photo: <img src="images/hero.jpg" alt="MYC new collection"> -->
-          <div class="ph"><svg aria-hidden="true"><use href="#hood"/></svg></div>
+          <div class="ph"><svg aria-hidden="true"><use href="#hood"/></svg></div><img data-src="outfit 1.jpg" alt="MYC new collection" style="object-position:center 30%">
         </div>
         <div class="stamp">Since 1989</div>
       </div>
@@ -243,9 +242,9 @@
         <a href="#new" class="link small">View all pieces</a>
       </div>
       <div class="cols">
-        <a href="#new" class="col rv"><div class="frame"><div class="ph"><svg aria-hidden="true"><use href="#tee"/></svg></div></div><div class="cap"><h3>Tees &amp; tops</h3><span class="small">12 pieces</span></div></a>
-        <a href="#new" class="col rv"><div class="frame"><div class="ph"><svg aria-hidden="true"><use href="#hood"/></svg></div></div><div class="cap"><h3>Outerwear</h3><span class="small">8 pieces</span></div></a>
-        <a href="#new" class="col rv"><div class="frame"><div class="ph"><svg aria-hidden="true"><use href="#pants"/></svg></div></div><div class="cap"><h3>Bottoms</h3><span class="small">10 pieces</span></div></a>
+        <a href="#new" class="col rv"><div class="frame"><div class="ph"><svg aria-hidden="true"><use href="#tee"/></svg></div><img data-src="Tees and Tops.jpg" alt="Tees and tops"></div><div class="cap"><h3>Tees &amp; tops</h3><span class="small">12 pieces</span></div></a>
+        <a href="#new" class="col rv"><div class="frame"><div class="ph"><svg aria-hidden="true"><use href="#hood"/></svg></div><img data-src="Outerwear.jpg" alt="Outerwear"></div><div class="cap"><h3>Outerwear</h3><span class="small">8 pieces</span></div></a>
+        <a href="#new" class="col rv"><div class="frame"><div class="ph"><svg aria-hidden="true"><use href="#pants"/></svg></div><img data-src="Bottoms.jpg" alt="Bottoms"></div><div class="cap"><h3>Bottoms</h3><span class="small">10 pieces</span></div></a>
       </div>
     </div>
   </section>
@@ -323,15 +322,24 @@
 
 <script>
   // Edit products here. Put a photo path in `img` (e.g. "images/tee1.jpg") to replace the placeholder icon.
+  // Photo folders to try, in order. The first one that works is used (covers index.html beside "images" or inside "Frontend").
+  const BASES = ["images/", "../images/", "/images/"];
+  function loadImg(img){
+    let i = 0;
+    const file = encodeURIComponent(img.dataset.src);
+    img.onerror = () => { i++; if (i < BASES.length) img.src = BASES[i] + file; else img.remove(); };
+    img.src = BASES[0] + file;
+  }
+  const loadImgs = () => document.querySelectorAll("img[data-src]").forEach(loadImg);
   const products = [
-    {id:1, name:"MYC Classic Tee",  desc:"Heavy cotton, relaxed fit",   price:3500, icon:"tee",   tag:"New", img:""},
-    {id:2, name:"Spirit Hoodie",    desc:"Brushed fleece",              price:8900, icon:"hood",  tag:"",    img:""},
-    {id:3, name:"Street Joggers",   desc:"Tapered, zip pockets",        price:6500, icon:"pants", tag:"",    img:""},
-    {id:4, name:"1989 Cap",         desc:"Embroidered, adjustable",     price:2800, icon:"cap",   tag:"New", img:""},
-    {id:5, name:"Oversized Tee",    desc:"Drop shoulder, soft wash",    price:4200, icon:"tee",   tag:"",    img:""},
-    {id:6, name:"Zip Hoodie",       desc:"Midweight, full zip",         price:9500, icon:"hood",  tag:"",    img:""},
-    {id:7, name:"Cargo Pants",      desc:"Utility fit, durable twill",  price:7800, icon:"pants", tag:"New", img:""},
-    {id:8, name:"Black Cap",        desc:"Orange MYC patch",            price:2600, icon:"cap",   tag:"",    img:""}
+    {id:1, name:"MYC Classic Tee",  desc:"Heavy cotton, relaxed fit",   price:3500, icon:"tee",   tag:"New", img:"classic tee.jpg"},
+    {id:2, name:"Spirit Hoodie",    desc:"Brushed fleece",              price:8900, icon:"hood",  tag:"",    img:"spirit hoodie.jpg"},
+    {id:3, name:"Street Joggers",   desc:"Tapered, zip pockets",        price:6500, icon:"pants", tag:"",    img:"street joggers.jpg"},
+    {id:4, name:"1989 Cap",         desc:"Embroidered, adjustable",     price:2800, icon:"cap",   tag:"New", img:"1989 cap.jpg"},
+    {id:5, name:"Oversized Tee",    desc:"Drop shoulder, soft wash",    price:4200, icon:"tee",   tag:"",    img:"oversized tee.jpg"},
+    {id:6, name:"Zip Hoodie",       desc:"Midweight, full zip",         price:9500, icon:"hood",  tag:"",    img:"zip hoodie.jpg"},
+    {id:7, name:"Cargo Pants",      desc:"Utility fit, durable twill",  price:7800, icon:"pants", tag:"New", img:"cargo pants.jpg"},
+    {id:8, name:"Black Cap",        desc:"Orange MYC patch",            price:2600, icon:"cap",   tag:"",    img:"black cap.jpg"}
   ];
   const fmt = n => "Rs. " + n.toLocaleString("en-LK");
   const $ = id => document.getElementById(id);
@@ -340,12 +348,14 @@
   $("products").innerHTML = products.map(p => `
     <article class="prod rv">
       <div class="frame">
-        ${p.img ? `<img src="${p.img}" alt="${p.name}" loading="lazy">` : `<div class="ph"><svg aria-hidden="true"><use href="#${p.icon}"/></svg></div>`}
+        ${p.img ? `<img data-src="${p.img}" alt="${p.name}">` : `<div class="ph"><svg aria-hidden="true"><use href="#${p.icon}"/></svg></div>`}
         ${p.tag ? `<span class="tag small">${p.tag}</span>` : ""}
         <button class="quick small" data-id="${p.id}">Add to cart</button>
       </div>
       <div class="row"><div><h3>${p.name}</h3><p>${p.desc}</p></div><span>${fmt(p.price)}</span></div>
     </article>`).join("");
+
+  loadImgs();
 
   document.querySelectorAll(".quick").forEach(b => b.addEventListener("click", () => {
     cart.push(products.find(p => p.id == b.dataset.id));
