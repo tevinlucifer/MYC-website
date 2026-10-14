@@ -7,219 +7,288 @@
 <meta name="description" content="MYC clothing store. Considered everyday wear.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=Big+Shoulders+Display:wght@900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=Big+Shoulders+Display:wght@900&display=swap" rel="stylesheet">
 <style>
   :root{
     --paper:#faf8f5; --ink:#141414; --accent:#ff7a1a;
-    --line:rgba(20,20,20,.12); --mute:rgba(20,20,20,.62);
-    --on-ink:rgba(250,248,245,.72); --on-ink-line:rgba(250,248,245,.16);
-    --sans:'Outfit',system-ui,sans-serif; --serif:'Cormorant Garamond',Georgia,serif; --logo:'Big Shoulders Display',Impact,sans-serif;
-    --ease:cubic-bezier(.2,.7,.2,1);
+    --panel:rgba(20,20,20,.055); --line:rgba(20,20,20,.12); --mute:rgba(20,20,20,.62);
+    --serif:'Fraunces',Georgia,serif; --sans:'Inter',system-ui,sans-serif; --logo:'Big Shoulders Display',Impact,sans-serif;
+    --ease:cubic-bezier(.2,.7,.2,1); --r:18px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{background:var(--ink);color:var(--paper);font-family:var(--sans);font-weight:300;line-height:1.6;-webkit-font-smoothing:antialiased}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
   img,svg{display:block;max-width:100%}
   a{color:inherit;text-decoration:none}
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  .tiny{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
-  em{font-family:var(--serif);font-style:italic;font-weight:500}
-
-  /* Header: logo, floating glass nav, shop pill */
-  .top{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:1.1rem clamp(1rem,2.4vw,2rem);pointer-events:none}
-  .top>*{pointer-events:auto}
-  .logo{font-family:var(--logo);font-weight:900;font-size:1.9rem;letter-spacing:.05em;display:flex;align-items:center;gap:.6rem}
-  .logo svg{width:34px;height:34px}
-  .pill{position:absolute;left:50%;transform:translateX(-50%);display:flex;gap:.2rem;padding:.35rem;border-radius:14px;background:rgba(20,20,20,.55);backdrop-filter:blur(14px);border:1px solid var(--on-ink-line)}
-  .item .lbl{display:block;padding:.55rem 1.1rem;border-radius:10px;font-size:.85rem;font-weight:400;transition:background .3s}
-  .item:hover .lbl,.item:focus-within .lbl,.item.open .lbl{background:rgba(250,248,245,.12)}
-  .menu{position:absolute;left:50%;top:100%;width:min(860px,92vw);padding-top:12px;opacity:0;visibility:hidden;transform:translate(-50%,8px);transition:opacity .35s var(--ease),transform .35s var(--ease),visibility .35s}
-  .item:hover .menu,.item:focus-within .menu,.item.open .menu{opacity:1;visibility:visible;transform:translate(-50%,0)}
-  .mbox{display:grid;grid-template-columns:200px 1fr 220px;gap:1.4rem;padding:1.1rem;border-radius:18px;background:var(--ink);border:1px solid var(--on-ink-line);box-shadow:0 30px 80px rgba(0,0,0,.5)}
-  .mimg{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:rgba(250,248,245,.08)}
-  .mimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .mimg em{position:absolute;left:.8rem;bottom:.7rem;font-size:1.3rem;z-index:1}
-  .mlinks p{color:var(--on-ink);font-size:.78rem;margin-top:1rem;max-width:30ch}
-  .mlinks .tiny{color:var(--on-ink)}
-  .mlinks a{display:flex;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid var(--on-ink-line);font-size:.92rem;transition:color .3s}
-  .mlinks a:hover{color:var(--accent)}
-  .mcard{background:var(--paper);color:var(--ink);border-radius:12px;padding:1rem;display:flex;flex-direction:column;gap:.7rem}
-  .mcard .ph{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:var(--line)}
-  .mcard .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .mcard em{font-size:1.4rem;line-height:1.1}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;padding:.8rem 1.4rem;border-radius:999px;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500;transition:transform .3s var(--ease),background .3s}
-  .btn:hover{transform:translateY(-2px)}
-  .btn.paper{background:var(--paper);color:var(--ink)}
-  .btn.ink{background:var(--ink);color:var(--paper)}
-  .menu-btn{display:none}
-
-  /* Scroll story */
-  .stage{height:560vh;position:relative}
-  .pin{position:sticky;top:0;height:100vh;overflow:hidden;background:radial-gradient(120% 90% at 50% 25%,#242a2e,var(--ink) 68%)}
-  .fr{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);overflow:hidden;background:#222}
-  .fr img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 28%}
-  .fr::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,20,20,.7),rgba(20,20,20,.1) 65%);opacity:var(--ov,0)}
-  .ch{position:absolute;inset:0;opacity:0;pointer-events:none;z-index:3}
-  .ch.on{pointer-events:auto}
-  .ch>*{position:absolute}
-  .h{font-size:clamp(2.7rem,6.4vw,5.8rem);line-height:1.02;letter-spacing:-.025em;font-weight:300}
-  .h em{letter-spacing:-.01em}
-  .l{left:clamp(1.4rem,6vw,5rem);top:50%;translate:0 -50%}
-  .r{right:clamp(1.4rem,6vw,5rem)}
-  .eyebrow{display:block;color:var(--on-ink);margin-bottom:1.4rem}
-  .sub{max-width:32ch;margin-top:1.4rem;color:var(--on-ink);font-size:1.05rem}
-  .big-it{font-family:var(--serif);font-style:italic;font-weight:500;font-size:clamp(1.8rem,3.4vw,3rem);text-align:right}
-  .big-it small{display:block;font-family:var(--sans);font-style:normal;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-ink);margin-top:.6rem}
-  .rail,.prog,.cta{position:fixed;z-index:40;opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s}
-  .in-stage .rail,.in-stage .prog,.in-stage .cta{opacity:1;visibility:visible}
-  .rail{left:clamp(.8rem,1.6vw,1.6rem);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:.7rem;color:var(--on-ink)}
-  .rail i{display:block;width:1px;height:60px;background:var(--on-ink-line)}
-  .rail span{writing-mode:vertical-rl;transform:rotate(180deg)}
-  .prog{left:clamp(1rem,2.4vw,2rem);bottom:1.6rem;display:flex;align-items:center;gap:.9rem}
-  .prog i{display:block;width:84px;height:1px;background:var(--on-ink-line);position:relative}
-  .prog i b{position:absolute;left:0;top:0;height:1px;background:var(--paper);width:0}
-  .cta{right:clamp(1rem,2.4vw,2rem);bottom:1.4rem}
-
-  /* Shop */
-  .light{background:var(--paper);color:var(--ink);font-weight:400}
-  section.light{padding:clamp(4rem,9vw,8rem) 0}
   .wrap{width:min(1280px,92%);margin-inline:auto}
-  .head{display:flex;justify-content:space-between;align-items:end;gap:2rem;flex-wrap:wrap;margin-bottom:3rem}
-  .head h2{font-size:clamp(2.4rem,5vw,4.4rem);font-weight:300;line-height:1.02;letter-spacing:-.02em}
-  .head p{color:var(--mute);max-width:36ch}
-  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2.4rem 1.4rem}
-  .prod .fm{position:relative;aspect-ratio:4/5;overflow:hidden;background:rgba(20,20,20,.06)}
-  .prod .fm img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
-  .prod:hover .fm img{transform:scale(1.05)}
-  .tag{position:absolute;top:.8rem;left:.8rem;background:var(--ink);color:var(--paper);padding:.2rem .7rem;z-index:2}
-  .quick{position:absolute;left:0;right:0;bottom:0;z-index:2;background:var(--ink);color:var(--paper);padding:.95rem;text-align:center;transform:translateY(101%);transition:transform .5s var(--ease)}
-  .prod:hover .quick,.prod:focus-within .quick{transform:none}
-  .quick:hover{background:var(--accent);color:var(--ink)}
-  .row{display:flex;justify-content:space-between;gap:1rem;padding-top:.9rem}
-  .row h3{font-size:1.05rem;font-weight:400}
-  .row p{color:var(--mute);font-size:.88rem}
-  .statement{text-align:center}
-  .statement h2{font-size:clamp(2.4rem,6vw,5.4rem);font-weight:300;line-height:1.02;letter-spacing:-.025em;max-width:16ch;margin:0 auto 1.4rem}
-  .statement p{color:var(--mute);max-width:46ch;margin:0 auto}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.05;letter-spacing:-.02em}
+  .btn{display:inline-block;padding:.9rem 2.2rem;font-size:.82rem;font-weight:500;border-radius:3px;transition:transform .3s var(--ease),background .3s,color .3s}
+  .btn:hover{transform:translateY(-2px)}
+  .btn.w{background:var(--paper);color:var(--ink)}
+  .btn.d{background:var(--ink);color:var(--paper)}
+  .btn.d:hover{background:var(--accent);color:var(--ink)}
+  .img{position:relative;overflow:hidden;border-radius:var(--r);background:var(--panel)}
+  .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--ease)}
+  .rv{opacity:0;transform:translateY(28px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+
+  /* Header */
+  .hd{position:fixed;inset:0 0 auto 0;z-index:50;color:var(--paper);transition:background .4s,color .4s,border-color .4s;border-bottom:1px solid transparent}
+  .hd.solid{background:rgba(250,248,245,.94);backdrop-filter:blur(10px);color:var(--ink);border-color:var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 0}
+  .logo{display:flex;align-items:center;gap:.55rem;font-family:var(--logo);font-weight:900;font-size:1.7rem;letter-spacing:.05em}
+  .logo svg{width:38px;height:38px}
+  .links{display:flex;gap:2.4rem;list-style:none;font-size:.85rem;font-weight:500}
+  .links a{opacity:.85;transition:opacity .3s}
+  .links a:hover{opacity:1}
+  .icons{display:flex;gap:1.1rem;align-items:center}
+  .icons button{position:relative;display:grid;place-items:center;width:28px;height:28px}
+  .icons svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .badge{position:absolute;top:-4px;right:-6px;min-width:16px;height:16px;border-radius:8px;background:var(--accent);color:var(--ink);font-size:.62rem;font-weight:600;display:grid;place-items:center;padding:0 4px}
+  .burger{display:none}
+
+  /* Hero */
+  .hero{position:relative;min-height:max(100svh,640px);color:var(--paper);overflow:hidden;background:var(--ink)}
+  .hero .img{position:absolute;inset:0;border-radius:0}
+  .hero .img img{object-position:center 30%}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,20,20,.5),rgba(20,20,20,.08) 40%,rgba(20,20,20,.6))}
+  .hero .in{position:absolute;inset:0;z-index:2}
+  .hero h1{position:absolute;left:4vw;right:4vw;top:34%;font-size:clamp(2.8rem,9.4vw,9.4rem);font-weight:600;white-space:nowrap;letter-spacing:-.03em}
+  .w1{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-right:.22em}
+  .w1 span{display:inline-block;transform:translateY(110%);animation:up 1.1s var(--ease) forwards;animation-delay:calc(var(--i)*.14s + .2s)}
+  @keyframes up{to{transform:none}}
+  .hero .side{position:absolute;right:4vw;top:58%;max-width:24ch;font-family:var(--serif);font-weight:500;font-size:1.05rem;line-height:1.5}
+  .hero .cta{position:absolute;left:4vw;bottom:9vh}
+  .hero .cta h2{font-size:clamp(2rem,4vw,3.4rem);margin-bottom:1.4rem;color:var(--paper)}
+
+  /* Section heads + carousel */
+  section{padding:clamp(3.5rem,8vw,7rem) 0}
+  .sh{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:2rem}
+  .sh h2{font-size:clamp(1.8rem,3.4vw,2.8rem)}
+  .ctl{display:flex;align-items:center;gap:1rem;font-size:.85rem;font-weight:600}
+  .ctl small{color:var(--mute);font-weight:400}
+  .ctl button{width:36px;height:36px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:1rem;transition:background .3s,opacity .3s}
+  .ctl button:hover{background:var(--accent);color:var(--ink)}
+  .ctl button:disabled{background:var(--panel);color:var(--mute);cursor:default}
+  .track{display:flex;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:.4rem}
+  .track::-webkit-scrollbar{display:none}
+  .cat{flex:0 0 clamp(200px,23%,300px);scroll-snap-align:start;position:relative}
+  .cat .img{aspect-ratio:3/4}
+  .cat:hover img{transform:scale(1.05)}
+  .cat .lab{position:absolute;left:.9rem;top:.9rem;z-index:2;font-size:.78rem;font-weight:500;color:var(--paper);text-shadow:0 1px 8px rgba(0,0,0,.5)}
+  .cat .go{position:absolute;right:.8rem;top:.8rem;z-index:2;width:32px;height:32px;border-radius:50%;background:var(--paper);color:var(--ink);display:grid;place-items:center;font-size:.9rem}
+
+  /* Editorial */
+  .ed-top{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2rem;align-items:start}
+  .ed-top p{font-size:.85rem;color:var(--mute);max-width:42ch}
+  .ed-top p+p{margin-top:1rem}
+  .ed-top .img{aspect-ratio:4/3;max-width:360px}
+  .ed-main{display:grid;grid-template-columns:1.1fr .9fr;gap:3rem;margin-top:3rem}
+  .ed-main h2{font-size:clamp(1.8rem,3.2vw,2.6rem);margin-bottom:2rem}
+  .ed-main .big{aspect-ratio:4/5;max-width:520px}
+  .pair{display:grid;grid-template-columns:1.05fr 1fr;gap:1rem;align-items:start}
+  .pcard{background:var(--accent);border-radius:var(--r);padding:.9rem;display:flex;flex-direction:column;gap:.5rem}
+  .pcard .img{aspect-ratio:3/4;background:rgba(20,20,20,.12)}
+  .pcard b{font-family:var(--serif);font-size:1rem}
+  .pcard .btn{padding:.7rem 1rem;text-align:center;border-radius:4px}
+  .pair .img.sm{aspect-ratio:1}
+  .ed-main .note{font-size:.85rem;color:var(--mute);max-width:36ch;margin:3rem 0 0 auto}
+
+  /* Sale banner */
+  .sale{position:relative;border-radius:26px;overflow:hidden;color:var(--paper);text-align:center;min-height:clamp(420px,52vw,640px);display:grid;place-items:center;padding:3rem 1rem;background:var(--ink)}
+  .sale>.img{position:absolute;inset:0;border-radius:0}
+  .sale::after{content:"";position:absolute;inset:0;background:rgba(20,20,20,.62)}
+  .sale .c{position:relative;z-index:2}
+  .sale h2{font-size:clamp(2.4rem,6vw,5rem);text-transform:uppercase;letter-spacing:.01em}
+  .sale p{font-size:.85rem;opacity:.85;margin-top:.6rem}
+  .cd{display:flex;justify-content:center;gap:clamp(1.2rem,4vw,3rem);margin:2rem 0}
+  .cd b{display:block;font-family:var(--serif);font-size:clamp(1.8rem,4vw,3rem);font-weight:600;line-height:1}
+  .cd span{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+
+  /* Featured products */
+  .pc{flex:0 0 clamp(200px,23%,300px);scroll-snap-align:start}
+  .pc .img{aspect-ratio:3/4}
+  .pc:hover img{transform:scale(1.05)}
+  .tag{position:absolute;top:.8rem;left:.8rem;z-index:2;background:var(--ink);color:var(--paper);font-size:.7rem;font-weight:500;padding:.15rem .7rem;border-radius:99px}
+  .quick{position:absolute;left:.7rem;right:.7rem;bottom:.7rem;z-index:2;background:var(--paper);color:var(--ink);padding:.7rem;border-radius:8px;font-size:.8rem;font-weight:500;text-align:center;transform:translateY(140%);transition:transform .5s var(--ease),background .3s}
+  .pc:hover .quick,.pc:focus-within .quick{transform:none}
+  .quick:hover{background:var(--accent)}
+  .pc small{display:block;margin-top:.8rem;color:var(--mute);font-size:.72rem}
+  .pc h3{font-size:1rem;margin-top:.1rem}
+  .pc .pr{font-size:.85rem;font-weight:500;margin-top:.2rem}
+
+  /* Care split */
+  .care{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .care .box{background:var(--panel);border-radius:var(--r);padding:clamp(2rem,5vw,4.5rem);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:1.4rem}
+  .care h2{font-size:clamp(1.8rem,3.4vw,2.8rem);max-width:12ch}
+  .care p{color:var(--mute);max-width:42ch;font-size:.95rem}
+  .care .img{aspect-ratio:1}
 
   /* Footer */
-  footer{padding:5rem 0 2rem;background:var(--ink)}
-  .fgrid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:3rem;align-items:start}
-  footer h2{font-size:clamp(2rem,4vw,3.2rem);font-weight:300;line-height:1.05;letter-spacing:-.02em}
-  footer p,footer a{color:var(--on-ink);font-size:.95rem}
-  footer a:hover{color:var(--accent)}
-  footer ul{list-style:none;display:grid;gap:.5rem}
-  footer h4{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;font-weight:500;margin-bottom:1rem}
-  form{display:flex;border-bottom:1px solid var(--on-ink-line);margin-top:1.4rem;max-width:420px}
-  input{flex:1;background:none;border:0;color:var(--paper);padding:.9rem 0;font:inherit}
-  input:focus{outline:none}
-  form button{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500}
-  form button:hover{color:var(--accent)}
-  .msg{min-height:1.5rem;margin-top:.6rem;font-size:.9rem}
-  .copy{margin-top:3.5rem;padding-top:1.4rem;border-top:1px solid var(--on-ink-line);color:rgba(250,248,245,.5);font-size:.82rem}
+  footer{padding:0 0 1.5rem}
+  .fp{background:var(--panel);border-radius:var(--r);padding:clamp(1.6rem,4vw,3rem);display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr 1.4fr;gap:2rem}
+  footer h4{font-size:.85rem;font-weight:600;margin-bottom:.9rem}
+  footer ul{list-style:none;display:grid;gap:.45rem}
+  footer li a,footer p{font-size:.82rem;color:var(--mute)}
+  footer li a:hover{color:var(--ink)}
+  .soc{display:flex;gap:.7rem;margin-top:1rem}
+  .soc a{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center}
+  .soc svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  form{display:flex;margin-top:.8rem}
+  input{flex:1;min-width:0;border:1px solid var(--line);background:var(--paper);padding:.7rem .9rem;font:inherit;font-size:.82rem;border-radius:3px 0 0 3px;color:var(--ink)}
+  input:focus{outline:2px solid var(--accent);outline-offset:-2px}
+  form button{background:var(--ink);color:var(--paper);padding:0 1.2rem;font-size:.75rem;font-weight:600;border-radius:0 3px 3px 0}
+  form button:hover{background:var(--accent);color:var(--ink)}
+  .msg{min-height:1.3rem;margin-top:.4rem}
+  .copy{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem;padding:1.2rem .4rem 0;font-size:.75rem;color:var(--mute)}
+  .copy span a{margin-left:1.4rem}
 
   /* Cart */
   .shade{position:fixed;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .4s;z-index:60}
   .shade.open{opacity:1;pointer-events:auto}
-  .drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:var(--paper);color:var(--ink);font-weight:400;transform:translateX(100%);transition:transform .5s var(--ease);z-index:70;display:flex;flex-direction:column}
+  .drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:var(--paper);transform:translateX(100%);transition:transform .5s var(--ease);z-index:70;display:flex;flex-direction:column}
   .drawer.open{transform:none}
   .dtop{display:flex;justify-content:space-between;align-items:center;padding:1.4rem;border-bottom:1px solid var(--line)}
-  .dtop h3{font-size:1.5rem;font-weight:300}
+  .dtop h3{font-size:1.5rem}
   .items{flex:1;overflow:auto;padding:0 1.4rem}
-  .item2{display:flex;justify-content:space-between;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--line)}
-  .item2 button{color:var(--mute);font-size:.85rem;text-decoration:underline}
+  .it{display:flex;justify-content:space-between;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--line);font-size:.92rem}
+  .it button{color:var(--mute);font-size:.82rem;text-decoration:underline}
   .empty{padding:1.2rem 0;color:var(--mute)}
   .sum{padding:1.4rem;border-top:1px solid var(--line);display:grid;gap:1rem}
   .sum div{display:flex;justify-content:space-between}
 
-  .rv{opacity:0;transform:translateY(26px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
-  .rv.in{opacity:1;transform:none}
-
-  @media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}.mbox{grid-template-columns:1fr}.mimg,.mcard .ph{display:none}.fgrid{grid-template-columns:1fr 1fr}}
-  @media (max-width:760px){
-    .menu-btn{display:block}
-    .pill{display:none;position:fixed;top:4.4rem;left:4%;right:4%;transform:none;flex-direction:column;background:rgba(20,20,20,.92)}
-    .pill.open{display:flex}
-    .menu{display:none}
-    .l{top:16vh;translate:0 0}
-    .r{bottom:16vh}
-    .rail,.prog{display:none}
-    .btn.hide-s{display:none}
+  @media (max-width:1000px){
+    .ed-top,.ed-main,.care{grid-template-columns:1fr}
+    .fp{grid-template-columns:1fr 1fr}
+    .ed-main .note{margin-left:0}
+    .cat,.pc{flex-basis:44%}
   }
-  @media (max-width:480px){.grid{grid-template-columns:1fr}.fgrid{grid-template-columns:1fr}}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important}.stage{height:100vh}.rv{opacity:1;transform:none}html{scroll-behavior:auto}}
+  @media (max-width:760px){
+    .links{display:none;position:fixed;top:64px;left:0;right:0;flex-direction:column;gap:0;padding:.6rem 4%;background:var(--paper);color:var(--ink);border-bottom:1px solid var(--line)}
+    .links.open{display:flex}
+    .links a{display:block;padding:.9rem 0}
+    .burger{display:grid}
+    .hero h1{white-space:normal;top:24%;font-size:clamp(3rem,15vw,5rem)}
+    .hero .side{position:static;margin:0;padding:0}
+    .hero .side{position:absolute;right:auto;left:4vw;top:auto;bottom:30vh;max-width:30ch}
+    .cat,.pc{flex-basis:68%}
+    .fp{grid-template-columns:1fr}
+    .pair{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}.w1 span{transform:none;animation:none}.rv{opacity:1;transform:none}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 
-<header class="top">
-  <a href="#top" class="logo" aria-label="MYC home">
-    <svg viewBox="0 0 100 100" fill="none" stroke="#ff7a1a" aria-hidden="true"><circle cx="50" cy="50" r="46" stroke-width="4"/><circle cx="50" cy="50" r="40" stroke-width="1.5"/><text x="50" y="60" text-anchor="middle" font-family="Big Shoulders Display,Impact,sans-serif" font-weight="900" font-size="30" fill="#ff7a1a" stroke="none">MYC</text></svg>
-    MYC
-  </a>
-  <nav class="pill" id="pill" aria-label="Main"></nav>
-  <div style="display:flex;gap:.6rem;align-items:center">
-    <button class="btn paper hide-s" id="openCart">Shop MYC &nbsp;·&nbsp; <span id="count">0</span></button>
-    <button class="btn paper menu-btn" id="menuBtn" aria-expanded="false">Menu</button>
+<header class="hd" id="hd">
+  <div class="wrap nav">
+    <a href="#top" class="logo" aria-label="MYC home">
+      <svg viewBox="0 0 100 100" fill="none" stroke="#ff7a1a" aria-hidden="true"><circle cx="50" cy="50" r="46" stroke-width="4"/><circle cx="50" cy="50" r="40" stroke-width="1.5"/><text x="50" y="60" text-anchor="middle" font-family="Big Shoulders Display,Impact,sans-serif" font-weight="900" font-size="30" fill="#ff7a1a" stroke="none">MYC</text></svg>
+      MYC
+    </a>
+    <ul class="links" id="links">
+      <li><a href="#top">Home</a></li><li><a href="#collections">Collections</a></li><li><a href="#featured">New in</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="icons">
+      <button aria-label="Browse products" onclick="location.hash='#featured'"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <button aria-label="Open cart" id="openCart"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg><span class="badge" id="count">0</span></button>
+      <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
   </div>
 </header>
 
-<div class="rail tiny" aria-hidden="true"><b id="rn">01</b><i></i><span id="rl">The look</span></div>
-<div class="prog tiny" aria-hidden="true"><b id="pn" style="font-weight:500">01</b><i><b id="pf"></b></i><span id="pl">The look</span></div>
-<a href="#contact" class="btn paper cta">Talk to MYC</a>
-
 <main id="top">
-  <section class="stage" id="stage" aria-label="MYC story">
-    <div class="pin">
-      <div class="fr" id="fr">
-        <img data-src="Outerwear.jpg" alt="" id="img2" style="opacity:0">
-        <img data-src="outfit 1.jpg" alt="MYC new collection" id="img1">
-      </div>
-
-      <div class="ch"><div class="l"><span class="tiny eyebrow">United by style, driven by spirit</span><h1 class="h">Style,<br>worn from <em>within.</em></h1><p class="sub">Considered clothing for everyday life. Cut with care and worn with confidence.</p></div><div class="r big-it" style="bottom:22vh">Driven by spirit.<small>MYC &nbsp;·&nbsp; Since 2026</small></div></div>
-      <div class="ch"><div class="l"><span class="tiny eyebrow">01 — The first detail</span><h2 class="h">One small stitch.<br>A story <em>begins.</em></h2></div></div>
-      <div class="ch"><div class="r" style="top:30%;text-align:right"><span class="tiny eyebrow">02 — Step inside</span><h2 class="h">Let the<br><em>outside in.</em></h2></div></div>
-      <div class="ch"><div class="l" style="top:auto;bottom:16vh;translate:0 0"><span class="tiny eyebrow">03 — Everyday, unfiltered</span><h2 class="h">Back to<br><em>what matters.</em></h2><a href="#new" class="btn paper" style="margin-top:2rem">Explore the collection &nbsp;↓</a></div></div>
+  <section class="hero" style="padding:0">
+    <div class="img"><img data-src="outfit 1.jpg" alt="MYC collection"></div>
+    <div class="in">
+      <h1 id="h1">United by style.</h1>
+      <p class="side">Where everyday fabric meets attitude, and every piece becomes a quiet declaration of who you are.</p>
+      <div class="cta"><h2>Driven by spirit.</h2><a href="#featured" class="btn w">Shop Now</a></div>
     </div>
   </section>
 
-  <section class="light" id="new">
+  <section id="collections">
     <div class="wrap">
-      <div class="head rv"><h2>New <em>in.</em></h2><p>The latest pieces from the MYC studio, ready to wear now.</p></div>
-      <div class="grid" id="products"></div>
+      <div class="sh rv"><h2>Shop by Category</h2>
+        <div class="ctl" data-car="cats"><span><b class="cur">01</b><small>/<span class="tot">06</span></small></span><button class="prev" aria-label="Previous">←</button><button class="next" aria-label="Next">→</button></div>
+      </div>
+      <div class="track rv" id="cats"></div>
     </div>
   </section>
 
-  <section class="light statement" id="story" style="padding-top:0">
+  <section id="about" style="padding-top:0">
+    <div class="wrap">
+      <div class="ed-top rv">
+        <div><p>Each of our collections is crafted to reflect the spirit of the times: dynamic, vibrant, and not confined to a single definition.</p><p>From minimalist silhouettes to edgy touches, MYC helps you keep evolving with styles that are both relevant and timeless.</p></div>
+        <div class="img"><img data-src="oversized tee.jpg" alt=""></div>
+        <span></span>
+      </div>
+      <div class="ed-main">
+        <div class="rv"><h2>The Art of Staying<br>Effortlessly Current</h2><div class="img big"><img data-src="Tees and Tops.jpg" alt=""></div></div>
+        <div class="rv">
+          <div class="pair">
+            <div class="pcard"><div class="img"><img data-src="zip hoodie.jpg" alt="Zip Hoodie"></div><b>Zip Hoodie</b><span style="font-size:.9rem;font-weight:600">Rs. 9,500</span><button class="btn d" data-add="6">Shop Now</button></div>
+            <div class="img sm"><img data-src="cargo pants.jpg" alt=""></div>
+          </div>
+          <p class="note">Our collections are crafted to reflect the spirit of the times: dynamic, vibrant, and not confined to a single definition.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
     <div class="wrap rv">
-      <h2>United by style, driven by <em>spirit.</em></h2>
-      <p>MYC is clothing for people who show up with attitude. Sharp cuts, fabrics made to last, and pieces that move from work to weekend without losing their edge.</p>
+      <div class="sale">
+        <div class="img"><img data-src="Outerwear.jpg" alt=""></div>
+        <div class="c">
+          <h2>Black Friday</h2><p>Get 30% off on your every spend!</p>
+          <div class="cd" aria-label="Sale countdown"><div><b id="cd-d">00</b><span>Days</span></div><div><b id="cd-h">00</b><span>Hours</span></div><div><b id="cd-m">00</b><span>Minutes</span></div><div><b id="cd-s">00</b><span>Seconds</span></div></div>
+          <a href="#featured" class="btn w">Shop Now</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="featured" style="padding-top:0">
+    <div class="wrap">
+      <div class="sh rv"><h2>Featured Product</h2>
+        <div class="ctl" data-car="prods"><span><b class="cur">01</b><small>/<span class="tot">08</span></small></span><button class="prev" aria-label="Previous">←</button><button class="next" aria-label="Next">→</button></div>
+      </div>
+      <div class="track rv" id="prods"></div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap care rv">
+      <div class="box"><h2>What we care about your fashion</h2><p>Our collections are crafted to reflect the spirit of the times: dynamic, vibrant, and not confined to a single definition.</p><a href="#featured" class="btn d">Shop Now</a></div>
+      <div class="img"><img data-src="Bottoms.jpg" alt=""></div>
     </div>
   </section>
 </main>
 
 <footer id="contact">
-  <div class="wrap fgrid">
-    <div>
-      <h2>First look at every <em>drop.</em></h2>
-      <form id="newsForm" novalidate>
-        <input type="email" id="email" placeholder="Your email address" aria-label="Email address" required>
-        <button type="submit">Subscribe</button>
-      </form>
-      <p class="msg" id="msg" role="status"></p>
+  <div class="wrap">
+    <div class="fp">
+      <div><a href="#top" class="logo" style="font-size:1.5rem"><svg viewBox="0 0 100 100" fill="none" stroke="#ff7a1a" aria-hidden="true"><circle cx="50" cy="50" r="46" stroke-width="4"/><circle cx="50" cy="50" r="40" stroke-width="1.5"/><text x="50" y="60" text-anchor="middle" font-family="Big Shoulders Display,Impact,sans-serif" font-weight="900" font-size="30" fill="#ff7a1a" stroke="none">MYC</text></svg>MYC</a>
+        <p style="margin-top:.8rem;max-width:26ch">United by style, driven by spirit.</p>
+        <div class="soc"><a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><circle cx="12" cy="12" r="3.5"/><circle cx="16.8" cy="7.2" r=".6"/></svg></a><a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M14 8h2V5h-2a3 3 0 0 0-3 3v2H9v3h2v6h3v-6h2l1-3h-3V8z"/></svg></a><a href="mailto:hello@yourstore.com" aria-label="Email"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></a></div></div>
+      <div><h4>Shop</h4><ul><li><a href="#featured">New Arrivals</a></li><li><a href="#featured">Best Sellers</a></li><li><a href="#collections">Collections</a></li></ul></div>
+      <div><h4>Help</h4><ul><li><a href="#contact">FAQs</a></li><li><a href="#contact">Shipping &amp; Returns</a></li><li><a href="#contact">Size Guide</a></li><li><a href="#contact">Contact Us</a></li></ul></div>
+      <div><h4>About</h4><ul><li><a href="#about">Our Story</a></li><li><a href="#contact">Visit the Store</a></li><li><a href="#contact">Press</a></li></ul><p style="margin-top:.8rem">Your store address<br>City, Sri Lanka</p></div>
+      <div><h4>Newsletter</h4><p>Subscribe to get special offers, free giveaways and first access to new drops.</p>
+        <form id="newsForm" novalidate><input type="email" id="email" placeholder="Your email" aria-label="Email address" required><button type="submit">JOIN</button></form><p class="msg" id="msg" role="status"></p></div>
     </div>
-    <div><h4>Explore</h4><ul><li><a href="#new">New in</a></li><li><a href="#story">Our story</a></li></ul></div>
-    <div><h4>Visit</h4><p>Your store address<br>City, Sri Lanka<br>+94 00 000 0000<br>hello@yourstore.com</p></div>
+    <div class="copy"><span>© <span id="year"></span> MYC. All rights reserved.</span><span><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></span></div>
   </div>
-  <div class="wrap copy">© <span id="year"></span> MYC. All rights reserved.</div>
 </footer>
 
 <div class="shade" id="shade"></div>
 <aside class="drawer" id="drawer" aria-label="Shopping cart" aria-hidden="true">
-  <div class="dtop"><h3>Your cart</h3><button class="tiny" id="closeCart">Close</button></div>
+  <div class="dtop"><h3>Your cart</h3><button id="closeCart" style="font-size:.85rem">Close</button></div>
   <div class="items" id="items"></div>
-  <div class="sum"><div><span>Total</span><strong id="total">Rs. 0</strong></div><button class="btn ink" onclick="alert('Connect your checkout or payment service here.')">Checkout</button></div>
+  <div class="sum"><div><span>Total</span><strong id="total">Rs. 0</strong></div><button class="btn d" onclick="alert('Connect your checkout or payment service here.')">Checkout</button></div>
 </aside>
 
 <script>
@@ -235,113 +304,96 @@
   }
   const loadImgs = () => document.querySelectorAll("img[data-src]").forEach(loadImg);
 
-  // ---- Dropdown menus ----
-  const MENUS = [
-    {k:"Shop", img:"Tees and Tops.jpg", cap:"A different rhythm.", tag:"The collections", note:"Pieces cut with care and made to be worn on repeat.", links:[["Tees & tops","#new"],["Outerwear","#new"],["Bottoms","#new"],["New in","#new"]]},
-    {k:"Discover", img:"Outerwear.jpg", cap:"Made to last.", tag:"The world of MYC", note:"Style with spirit, for every day.", links:[["Our story","#story"],["Lookbook","#new"],["Visit the store","#contact"]]},
-    {k:"Contact", img:"Bottoms.jpg", cap:"Good things start here.", tag:"Connect with MYC", note:"Questions or collaborations? Get in touch.", links:[["Contact MYC","#contact"],["Press & media","#contact"],["FAQs","#contact"]]}
-  ];
-  $("pill").innerHTML = MENUS.map(m => `
-    <div class="item">
-      <a class="lbl" href="${m.links[0][1]}" aria-haspopup="true">${m.k} <span aria-hidden="true">⌄</span></a>
-      <div class="menu"><div class="mbox">
-        <div class="mimg"><img data-src="${m.img}" alt=""><em>${m.cap}</em></div>
-        <div class="mlinks"><span class="tiny">${m.tag}</span>
-          ${m.links.map((l,i) => `<a href="${l[1]}"><span>0${i+1} &nbsp; ${l[0]}</span><span>↗</span></a>`).join("")}
-          <p>${m.note}</p></div>
-        <div class="mcard"><span class="tiny" style="color:var(--mute)">MYC Classic</span><div class="ph"><img data-src="classic tee.jpg" alt=""></div><em>Style, carried with you.</em><a href="#new" class="btn ink">Shop MYC &nbsp;→</a></div>
-      </div></div>
-    </div>`).join("");
-  $("menuBtn").onclick = () => { const o = $("pill").classList.toggle("open"); $("menuBtn").setAttribute("aria-expanded", o); };
-  $("pill").addEventListener("click", e => { if (e.target.closest(".mlinks a, .lbl")) $("pill").classList.remove("open"); });
+  // Hero headline word reveal
+  $("h1").innerHTML = $("h1").textContent.split(" ").map((w,i) => `<span class="w1"><span style="--i:${i}">${w}</span></span>`).join("");
 
-  // ---- Products (put photo file names in `img`) ----
-  const products = [
-    {id:1, name:"MYC Classic Tee",  desc:"Heavy cotton, relaxed fit",   price:3500, tag:"New", img:"classic tee.jpg"},
-    {id:2, name:"Spirit Hoodie",    desc:"Brushed fleece",              price:8900, tag:"",    img:"spirit hoodie.jpg"},
-    {id:3, name:"Street Joggers",   desc:"Tapered, zip pockets",        price:6500, tag:"",    img:"street joggers.jpg"},
-    {id:4, name:"1989 Cap",         desc:"Embroidered, adjustable",     price:2800, tag:"New", img:"1989 cap.jpg"},
-    {id:5, name:"Oversized Tee",    desc:"Drop shoulder, soft wash",    price:4200, tag:"",    img:"oversized tee.jpg"},
-    {id:6, name:"Zip Hoodie",       desc:"Midweight, full zip",         price:9500, tag:"",    img:"zip hoodie.jpg"},
-    {id:7, name:"Cargo Pants",      desc:"Utility fit, durable twill",  price:7800, tag:"New", img:"cargo pants.jpg"},
-    {id:8, name:"Black Cap",        desc:"Orange MYC patch",            price:2600, tag:"",    img:"black cap.jpg"}
+  // Categories (edit labels / photos here)
+  const CATS = [
+    ["Tees & Tops","Tees and Tops.jpg"],["Outerwear","Outerwear.jpg"],["Bottoms","Bottoms.jpg"],
+    ["Hoodies","spirit hoodie.jpg"],["Joggers","street joggers.jpg"],["Caps","1989 cap.jpg"]
   ];
-  $("products").innerHTML = products.map(p => `
-    <article class="prod rv">
-      <div class="fm"><img data-src="${p.img}" alt="${p.name}">${p.tag ? `<span class="tag tiny">${p.tag}</span>` : ""}<button class="quick tiny" data-id="${p.id}">Add to cart</button></div>
-      <div class="row"><div><h3>${p.name}</h3><p>${p.desc}</p></div><span>${fmt(p.price)}</span></div>
+  $("cats").innerHTML = CATS.map(c => `<a href="#featured" class="cat"><div class="img"><img data-src="${c[1]}" alt="${c[0]}"></div><span class="lab">${c[0]}</span><span class="go" aria-hidden="true">↗</span></a>`).join("");
+
+  // Products (put photo file names in `img`)
+  const products = [
+    {id:1, name:"MYC Classic Tee",  cat:"Tees",      price:3500, tag:"New", img:"classic tee.jpg"},
+    {id:2, name:"Spirit Hoodie",    cat:"Hoodies",   price:8900, tag:"",    img:"spirit hoodie.jpg"},
+    {id:3, name:"Street Joggers",   cat:"Bottoms",   price:6500, tag:"",    img:"street joggers.jpg"},
+    {id:4, name:"1989 Cap",         cat:"Headwear",  price:2800, tag:"New", img:"1989 cap.jpg"},
+    {id:5, name:"Oversized Tee",    cat:"Tees",      price:4200, tag:"",    img:"oversized tee.jpg"},
+    {id:6, name:"Zip Hoodie",       cat:"Hoodies",   price:9500, tag:"",    img:"zip hoodie.jpg"},
+    {id:7, name:"Cargo Pants",      cat:"Bottoms",   price:7800, tag:"New", img:"cargo pants.jpg"},
+    {id:8, name:"Black Cap",        cat:"Headwear",  price:2600, tag:"",    img:"black cap.jpg"}
+  ];
+  $("prods").innerHTML = products.map(p => `
+    <article class="pc">
+      <div class="img"><img data-src="${p.img}" alt="${p.name}">${p.tag ? `<span class="tag">${p.tag}</span>` : ""}<button class="quick" data-add="${p.id}">Add to cart</button></div>
+      <small>${p.cat}</small><h3>${p.name}</h3><div class="pr">${fmt(p.price)}</div>
     </article>`).join("");
   loadImgs();
 
-  // ---- Cart ----
+  // Carousels
+  document.querySelectorAll(".ctl").forEach(ctl => {
+    const tr = $(ctl.dataset.car), prev = ctl.querySelector(".prev"), next = ctl.querySelector(".next");
+    const step = () => { const c = tr.children[0]; return c.getBoundingClientRect().width + 16; };
+    const upd = () => {
+      const i = Math.round(tr.scrollLeft / step());
+      ctl.querySelector(".cur").textContent = String(i + 1).padStart(2, "0");
+      ctl.querySelector(".tot").textContent = String(tr.children.length).padStart(2, "0");
+      prev.disabled = tr.scrollLeft < 4;
+      next.disabled = tr.scrollLeft + tr.clientWidth >= tr.scrollWidth - 4;
+    };
+    prev.onclick = () => tr.scrollBy({left:-step(), behavior:"smooth"});
+    next.onclick = () => tr.scrollBy({left:step(), behavior:"smooth"});
+    tr.addEventListener("scroll", upd, {passive:true}); addEventListener("resize", upd); upd();
+  });
+
+  // Cart
   let cart = [];
-  document.querySelectorAll(".quick").forEach(b => b.addEventListener("click", () => {
-    cart.push(products.find(p => p.id == b.dataset.id)); renderCart();
-    b.textContent = "Added"; setTimeout(() => b.textContent = "Add to cart", 900);
-  }));
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-add]"); if (!b) return;
+    cart.push(products.find(p => p.id == b.dataset.add)); renderCart();
+    const t = b.textContent; b.textContent = "Added"; setTimeout(() => b.textContent = t, 900);
+  });
   function renderCart(){
     $("count").textContent = cart.length;
     $("total").textContent = fmt(cart.reduce((s,p) => s + p.price, 0));
     $("items").innerHTML = cart.length
-      ? cart.map((p,i) => `<div class="item2"><div><strong style="font-weight:500">${p.name}</strong><br><span style="color:var(--mute)">${fmt(p.price)}</span></div><button data-i="${i}">Remove</button></div>`).join("")
-      : '<p class="empty">Your cart is empty. Add a piece from New in.</p>';
-    document.querySelectorAll(".item2 button").forEach(b => b.addEventListener("click", () => { cart.splice(b.dataset.i,1); renderCart(); }));
+      ? cart.map((p,i) => `<div class="it"><div><strong>${p.name}</strong><br><span style="color:var(--mute)">${fmt(p.price)}</span></div><button data-i="${i}">Remove</button></div>`).join("")
+      : '<p class="empty">Your cart is empty. Add a piece from Featured Product.</p>';
+    document.querySelectorAll(".it button").forEach(b => b.addEventListener("click", () => { cart.splice(b.dataset.i,1); renderCart(); }));
   }
   function toggleCart(o){ $("drawer").classList.toggle("open",o); $("shade").classList.toggle("open",o); $("drawer").setAttribute("aria-hidden",!o); }
   $("openCart").onclick = () => toggleCart(true);
   $("closeCart").onclick = $("shade").onclick = () => toggleCart(false);
   document.addEventListener("keydown", e => { if (e.key === "Escape") toggleCart(false); });
 
-  // ---- Newsletter ----
+  // Header: transparent over hero, solid after scrolling
+  const hd = $("hd");
+  const onScroll = () => hd.classList.toggle("solid", scrollY > innerHeight*.6);
+  addEventListener("scroll", onScroll, {passive:true}); onScroll();
+  $("burger").onclick = () => { const o = $("links").classList.toggle("open"); $("burger").setAttribute("aria-expanded", o); hd.classList.toggle("solid", o || scrollY > innerHeight*.6); };
+  $("links").addEventListener("click", e => { if (e.target.tagName === "A") $("links").classList.remove("open"); });
+
+  // Sale countdown: change this date for your own sale
+  const SALE_END = new Date("2026-11-27T23:59:59");
+  function tickCd(){
+    let s = Math.max(0, Math.floor((SALE_END - new Date())/1000));
+    const d = Math.floor(s/86400); s %= 86400; const h = Math.floor(s/3600); s %= 3600; const m = Math.floor(s/60); s %= 60;
+    [["d",d],["h",h],["m",m],["s",s]].forEach(([k,v]) => $("cd-"+k).textContent = String(v).padStart(2,"0"));
+  }
+  tickCd(); setInterval(tickCd, 1000);
+
+  // Newsletter
   $("newsForm").addEventListener("submit", e => {
     e.preventDefault();
     const ok = /^\S+@\S+\.\S+$/.test($("email").value);
-    $("msg").textContent = ok ? "You're on the list. Thanks for joining MYC." : "Enter a valid email address, like name@example.com.";
+    $("msg").textContent = ok ? "You're on the list. Thanks for joining MYC." : "Enter a valid email, like name@example.com.";
     if (ok) $("email").value = "";
   });
 
-  // ---- Scroll story ----
-  const stage = $("stage"), fr = $("fr"), im1 = $("img1"), im2 = $("img2"), chs = [...document.querySelectorAll(".ch")];
-  const LABELS = ["The look", "The detail", "The passage", "Everyday"];
-  const rm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const clamp = (x,a=0,b=1) => Math.min(b, Math.max(a, x));
-  const ease = x => { x = clamp(x); return x*x*(3-2*x); };
-  const seg = (t,a,b) => ease((t-a)/(b-a));
-  const lerp = (a,b,k) => a + (b-a)*k;
-
-  function update(){
-    const W = innerWidth, H = innerHeight, r = stage.getBoundingClientRect();
-    document.body.classList.toggle("in-stage", r.top < H*.3 && r.bottom > H*.6);
-    const p = rm ? 0 : clamp(-r.top / (r.height - H)), t = p*4;
-    const mob = W < 760;
-    const w0 = mob ? W*.62 : Math.min(W*.3, 380), h0 = H*(mob ? .5 : .76);
-    const zoom = seg(t,.7,1.5), open = seg(t,2.1,3);
-    const w = lerp(w0*(1 + .1*zoom), W, open), h = lerp(h0, H, open);
-    fr.style.width = w + "px"; fr.style.height = h + "px"; fr.style.borderRadius = lerp(26,0,open) + "px";
-    fr.style.setProperty("--ov", .95*seg(t,2.2,3));
-    im1.style.transform = "scale(" + (1 + 1.1*zoom - 1.02*open + .08*seg(t,3,4)) + ")";
-    im2.style.opacity = seg(t,2.3,3);
-    chs.forEach((c,i) => {
-      let d = Math.abs(t - (i + .5));
-      if (i === 0) d = Math.max(0, t - .5);
-      if (i === 3) d = Math.max(0, 3.5 - t);
-      const o = clamp((.42 - d)/.14);
-      c.style.opacity = o;
-      c.style.transform = "translateY(" + clamp((i + .5 - t)*34, -18, 18) + "px)";
-      c.classList.toggle("on", o > .5);
-    });
-    const idx = Math.min(3, Math.floor(t)), n = "0" + (idx + 1);
-    $("rn").textContent = $("pn").textContent = n;
-    $("rl").textContent = $("pl").textContent = LABELS[idx];
-    $("pf").style.width = (p*100) + "%";
-  }
-  let tick = false;
-  addEventListener("scroll", () => { if (!tick) { tick = true; requestAnimationFrame(() => { update(); tick = false; }); } }, {passive:true});
-  addEventListener("resize", update);
-  update();
-
   // Scroll reveal
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold:.12});
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold:.1});
   document.querySelectorAll(".rv").forEach(el => io.observe(el));
 
   $("year").textContent = new Date().getFullYear();
